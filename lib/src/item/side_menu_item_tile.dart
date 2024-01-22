@@ -1,5 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_side_menu/src/data/side_menu_item_data.dart';
 import 'package:flutter_side_menu/src/utils/constants.dart';
@@ -23,8 +22,7 @@ class _SideMenuItemTileState extends State<SideMenuItemTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: widget.data.itemHeight,
-      margin: widget.data.margin,
+      height: widget.data.itemList != null ? null : widget.data.itemHeight,
       decoration: ShapeDecoration(
         shape: shape(context),
         color: widget.data.isSelected
@@ -34,7 +32,7 @@ class _SideMenuItemTileState extends State<SideMenuItemTile> {
       ),
       child: Material(
         color: Colors.transparent,
-        clipBehavior: Clip.hardEdge,
+        clipBehavior: Clip.antiAlias,
         shape: shape(context),
         child: InkWell(
           onTap: widget.data.onTap,
@@ -55,8 +53,10 @@ class _SideMenuItemTileState extends State<SideMenuItemTile> {
 
   Color getSelectedColor() {
     return widget.data.isSelected
-        ? widget.data.selectedTitleStyle?.color  ?? Theme.of(context).colorScheme.onSecondaryContainer
-        : widget.data.titleStyle?.color ?? Theme.of(context).colorScheme.onSurfaceVariant;
+        ? widget.data.selectedTitleStyle?.color ??
+            Theme.of(context).colorScheme.onSecondaryContainer
+        : widget.data.titleStyle?.color ??
+            Theme.of(context).colorScheme.onSurfaceVariant;
   }
 
   Widget? getSelectedIcon() {
@@ -69,16 +69,12 @@ class _SideMenuItemTileState extends State<SideMenuItemTile> {
     required BuildContext context,
   }) {
     final content = _hasTooltip(
-      child: _hasBadge(
-        child: _content(
-          context: context,
-        ),
+      child: _content(
+        context: context,
       ),
     );
 
-    return widget.data.isSelected && widget.data.hasSelectedLine
-        ? _hasSelectedLine(child: content)
-        : content;
+    return content;
   }
 
   Widget _hasTooltip({
@@ -93,39 +89,43 @@ class _SideMenuItemTileState extends State<SideMenuItemTile> {
     return child;
   }
 
-  Widget _hasBadge({
-    required Widget child,
-  }) {
-    if (widget.data.badgeContent != null) {
-      return badges.Badge(
-        badgeContent: Center(child: widget.data.badgeContent!),
-        badgeStyle: widget.data.badgeStyle ?? Constants.badgeStyle,
-        position: widget.data.badgePosition ?? Constants.badgePosition,
-        child: child,
-      );
-    }
-    return child;
-  }
-
   Widget _content({
     required BuildContext context,
   }) {
     final hasIcon = widget.data.icon != null;
     final hasTitle = widget.data.title != null;
-    if (hasIcon && hasTitle) {
-      return Row(
-        children: [
-          _icon(),
-          if (widget.isOpen)
-            Expanded(
-              child: _title(context: context),
-            ),
-        ],
+    final hasExpansionTileList = widget.data.itemList != null;
+    if (hasIcon && hasTitle && hasExpansionTileList) {
+      return ExpansionTile(
+        tilePadding: EdgeInsets.zero,
+        title: Wrap(
+          alignment: WrapAlignment.start,
+          children: [
+            Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8), child: _icon()),
+            if (widget.isOpen) _title(context: context),
+          ],
+        ),
+        children: widget.data.itemList!,
+      );
+    } else if (hasIcon && hasTitle) {
+      return SizedBox(
+        width: widget.minWidth - 36,
+        child: Wrap(
+          alignment: WrapAlignment.start,
+          runAlignment: WrapAlignment.center,
+          children: [
+            Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8), child: _icon()),
+            if (widget.isOpen) _title(context: context)
+          ],
+        ),
       );
     } else if (hasIcon) {
       return Align(
         alignment: AlignmentDirectional.centerStart,
-        child: _icon(),
+        child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8), child: _icon()),
       );
     } else {
       return Container(
@@ -139,8 +139,7 @@ class _SideMenuItemTileState extends State<SideMenuItemTile> {
   Widget _icon() {
     return widget.data.icon != null
         ? SizedBox(
-            width: widget.minWidth - widget.data.margin.horizontal,
-            height: double.maxFinite,
+            width: widget.minWidth - widget.data.margin.horizontal - 40,
             child: IconTheme(
               data: Theme.of(context)
                   .iconTheme
@@ -165,27 +164,6 @@ class _SideMenuItemTileState extends State<SideMenuItemTile> {
           : titleStyle?.copyWith(color: getSelectedColor()),
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
-    );
-  }
-
-  Widget _selectedLine() {
-    return SizedBox.fromSize(
-      size: widget.data.selectedLineSize,
-      child: ColoredBox(
-        color: getSelectedColor(),
-      ),
-    );
-  }
-
-  Widget _hasSelectedLine({
-    required Widget child,
-  }) {
-    return Stack(
-      alignment: AlignmentDirectional.centerStart,
-      children: [
-        child,
-        _selectedLine(),
-      ],
     );
   }
 }

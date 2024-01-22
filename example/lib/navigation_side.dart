@@ -78,13 +78,7 @@ class NavigationSide extends StatelessWidget {
                                 e.icon,
                                 color: const Color(0xff8e8e8e),
                               ),
-                              badgeContent: const Text(
-                                '23',
-                                style: TextStyle(
-                                  fontSize: 8,
-                                  color: Colors.white,
-                                ),
-                              ).showOrNull(data.isOpen),
+                            
                             ),
                           )
                           .toList(),

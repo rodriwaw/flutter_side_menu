@@ -31,55 +31,69 @@ class _MyAppState extends State<MyApp> {
               controller: _controller,
               backgroundColor: Colors.blueGrey,
               mode: SideMenuMode.open,
+              hasResizer: false,
               builder: (data) {
                 return SideMenuData(
                   header: const Text('Header'),
                   items: [
-                    const SideMenuItemDataTitle(
-                      title: 'Section Header'
-                    ),
+                    const SideMenuItemDataTitle(title: 'Section Header'),
                     SideMenuItemDataTile(
+                      borderRadius: BorderRadius.zero,
                       isSelected: _currentIndex == 0,
                       onTap: () => setState(() => _currentIndex = 0),
-                      title: 'Item 1',
+                      title: 'Only title',
                       hoverColor: Colors.blue,
                       titleStyle: const TextStyle(color: Colors.white),
-                      icon: const Icon(Icons.home_outlined),
-                      selectedIcon: const Icon(Icons.home),
-                      badgeContent: const Text(
-                        '23',
-                        style: TextStyle(
-                          fontSize: 8,
-                          color: Colors.white,
-                        ),
-                      ),
                     ),
                     SideMenuItemDataTile(
+                      borderRadius: BorderRadius.zero,
                       isSelected: _currentIndex == 1,
                       onTap: () => setState(() => _currentIndex = 1),
-                      title: 'Item 2',
-                      selectedTitleStyle:
-                          const TextStyle(fontWeight: FontWeight.w700,color: Colors.yellow),
+                      selectedTitleStyle: const TextStyle(
+                          fontWeight: FontWeight.w700, color: Colors.yellow),
                       icon: const Icon(Icons.table_bar_outlined),
                       selectedIcon: const Icon(Icons.table_bar),
-                      titleStyle: const TextStyle(color: Colors.deepPurpleAccent),
+                    ),
+                    SideMenuItemDataTile(
+                      borderRadius: BorderRadius.zero,
+                      isSelected: _currentIndex == 2,
+                      onTap: () => setState(() => _currentIndex = 2),
+                      selectedTitleStyle: const TextStyle(
+                          fontWeight: FontWeight.w700, color: Colors.red),
+                      icon: const Icon(Icons.table_bar_outlined),
+                      title: 'Title and icon',
+                      selectedIcon: const Icon(Icons.table_bar),
                     ),
                     const SideMenuItemDataTitle(
                       title: 'Account',
                       textAlign: TextAlign.center,
                     ),
                     SideMenuItemDataTile(
-                      isSelected: _currentIndex == 2,
-                      onTap: () => setState(() => _currentIndex = 2),
-                      title: 'Item 3',
-                      icon: const Icon(Icons.play_arrow),
-                    ),
+                        borderRadius: BorderRadius.zero,
+                        isSelected: _currentIndex == 3,
+                        onTap: () => setState(() => _currentIndex = 3),
+                        title: 'Inventarios clientes',
+                        icon: const Icon(Icons.play_arrow),
+                        titleStyle: TextStyle(
+                          overflow: TextOverflow.fade,
+                        ),
+                        itemList: [
+                          Text('item1'),
+                          Text('item1'),
+                          Text('item1')
+                        ]),
                     SideMenuItemDataTile(
-                      isSelected: _currentIndex == 3,
-                      onTap: () => setState(() => _currentIndex = 3),
-                      title: 'Item 4',
-                      icon: const Icon(Icons.car_crash),
-                    ),
+                        borderRadius: BorderRadius.zero,
+                        isSelected: _currentIndex == 4,
+                        onTap: () => setState(() => _currentIndex = 4),
+                        title: 'Item 4',
+                        itemList: [Text('item1')]),
+                    SideMenuItemDataTile(
+                        borderRadius: BorderRadius.zero,
+                        isSelected: _currentIndex == 5,
+                        onTap: () => setState(() => _currentIndex = 5),
+                        icon: const Icon(Icons.abc),
+                        itemList: [Text('item1')]),
                   ],
                   footer: const Text('Footer'),
                 );

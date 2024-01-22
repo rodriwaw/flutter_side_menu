@@ -1,10 +1,9 @@
-import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 
 class Constants {
   /// Size
-  static const double minWidth = 50.0;
-  static const double maxWidth = 250.0;
+  static const double minWidth = 75.0;
+  static const double maxWidth = 260.0;
   static const double zeroWidth = 0.0;
   static const double itemHeight = 40.0;
   static const double itemSelectedLineHeight = 20.0;
@@ -28,14 +27,4 @@ class Constants {
     end: 4,
     top: 4,
   );
-
-  /// Position
-  static final badgePosition = BadgePosition.custom(
-    end: 12.0,
-    bottom: 0.0,
-    top: 0.0,
-  );
-
-  /// Style
-  static const badgeStyle = BadgeStyle(badgeColor: selectedColor);
 }
