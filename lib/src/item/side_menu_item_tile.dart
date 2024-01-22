@@ -99,7 +99,7 @@ class _SideMenuItemTileState extends State<SideMenuItemTile> {
       return ExpansionTile(
         tilePadding: EdgeInsets.zero,
         title: Wrap(
-          alignment: WrapAlignment.start,
+          alignment: widget.isOpen ? WrapAlignment.start : WrapAlignment.center,
           children: [
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8), child: _icon()),
@@ -112,7 +112,7 @@ class _SideMenuItemTileState extends State<SideMenuItemTile> {
       return SizedBox(
         width: widget.minWidth - 36,
         child: Wrap(
-          alignment: WrapAlignment.start,
+          alignment: widget.isOpen ? WrapAlignment.start : WrapAlignment.center,
           runAlignment: WrapAlignment.center,
           children: [
             Padding(
@@ -123,14 +123,14 @@ class _SideMenuItemTileState extends State<SideMenuItemTile> {
       );
     } else if (hasIcon) {
       return Align(
-        alignment: AlignmentDirectional.centerStart,
+        alignment: widget.isOpen ? Alignment.centerLeft : Alignment.center,
         child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 8), child: _icon()),
       );
     } else {
       return Container(
-        alignment: AlignmentDirectional.centerStart,
-        padding: Constants.textStartPadding,
+        alignment: widget.isOpen ? Alignment.centerLeft : Alignment.center,
+        padding: widget.isOpen ? Constants.textStartPadding : null,
         child: _title(context: context),
       );
     }
